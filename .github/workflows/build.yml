@@ -13,7 +13,7 @@ jobs:
 
       - name: prepare
         run: |
-          ls ~/work/VoodooI2C/VoodooI2C.xcworkspace
+          ls ~/work/VoodooI2C/
           src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh) && eval "$src" && mv VoodooInput Dependencies
           pip install cpplint
           pip install git+https://github.com/alexandred/cldoc.git
