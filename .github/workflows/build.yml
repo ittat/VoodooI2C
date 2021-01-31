@@ -1,0 +1,28 @@
+name: CI
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+     runs-on: macos-latest
+     
+     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: prepare
+        run: |
+          src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh) && eval "$src" && mv VoodooInput Dependencies
+          pip install cpplint
+          pip install git+https://github.com/alexandred/cldoc.git
+          echo 'export PATH=~/Library/Python/2.7/bin:$PATH' >> ~/.bashrc
+          git submodule init && git submodule update
+          #xcodebuild -workspace "VoodooI2C.xcworkspace" -scheme "VoodooI2C" -sdk macosx10.12 -derivedDataPath build clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+      - name: build
+        uses: sersoft-gmbh/xcodebuild-action@v1
+        with:
+          project: VoodooI2C.xcworkspace
+          scheme: VoodooI2C
+          destination: platform=macOS
+          action: build
+          sdk: macosx
