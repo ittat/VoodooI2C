@@ -14,17 +14,20 @@ jobs:
       - name: prepare
         run: |
           ls ~/work/VoodooI2C/VoodooI2C
+          curl -L https://github.com/alexey-lysiuk/macos-sdk/releases/download/10.12/MacOSX10.12.tar.bz2 -o /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.tar.bz2 && tar -xjf /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.tar.bz2 -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
           src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh) && eval "$src" && mv VoodooInput Dependencies
           pip install cpplint
           pip install git+https://github.com/alexandred/cldoc.git
           echo 'export PATH=~/Library/Python/2.7/bin:$PATH' >> ~/.bashrc
           git submodule init && git submodule update
           #xcodebuild -workspace "VoodooI2C.xcworkspace" -scheme "VoodooI2C" -sdk macosx -derivedDataPath build clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-      - name: build
-        uses: sersoft-gmbh/xcodebuild-action@v1
-        with:
-          project: ~/work/VoodooI2C/VoodooI2C/VoodooI2C.xcworkspace
-          scheme: VoodooI2C
-          destination: platform=macOS
-          action: build
-          sdk: macosx
+          xcodebuild -workspace "VoodooI2C.xcworkspace" -scheme "VoodooI2C" -sdk macosx10.12 -derivedDataPath build clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+
+#       - name: build
+#         uses: sersoft-gmbh/xcodebuild-action@v1
+#         with:
+#           project: ~/work/VoodooI2C/VoodooI2C/VoodooI2C.xcworkspace
+#           scheme: VoodooI2C
+#           destination: platform=macOS
+#           action: build
+#           sdk: macosx
