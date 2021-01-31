@@ -10,8 +10,11 @@ jobs:
      steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          path: VoodooI2C
       - name: prepare
         run: |
+          ls ~
           src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/VoodooInput/master/VoodooInput/Scripts/bootstrap.sh) && eval "$src" && mv VoodooInput Dependencies
           pip install cpplint
           pip install git+https://github.com/alexandred/cldoc.git
@@ -21,7 +24,7 @@ jobs:
       - name: build
         uses: sersoft-gmbh/xcodebuild-action@v1
         with:
-          project: VoodooI2C.xcworkspace
+          project: ~/VoodooI2C/VoodooI2C.xcworkspace
           scheme: VoodooI2C
           destination: platform=macOS
           action: build
